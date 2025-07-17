@@ -1,0 +1,83 @@
+create table Departments(
+  dept_id int primary key,
+  dept_name varchar(100)
+);
+
+create table Professors(
+  prof_id int primary key,
+  name varchar(100),
+  dept_id INT,
+  FOREIGN KEY(dept_id) REFERENCES Departments(dept_id)
+);
+
+create table Students(
+  student_id int PRIMARY key,
+  name varchar(100),
+  dept_id INT,
+  FOREIGN KEY(dept_id) REFERENCES Departments(dept_id)
+);
+
+CREATE TABLE Courses(
+  course_id int PRIMARY KEY,
+  course_name varchar(100),
+  prof_id int,
+  FOREIGN key(prof_id) REFERENCES Professors(prof_id)
+);
+
+CREATE TABLE Enrollment(
+  student_id int,
+  course_id int,
+  PRIMARY KEY(student_id,course_id),
+  FOREIGN KEY(student_id) REFERENCES Students(student_id),
+  FOREIGN KEY(course_id) REFERENCES Courses(course_id)
+);
+
+-- -----------------------------------------------------------------------------
+
+INSERT into Departments VALUES
+(1,'Computer Science'),
+(2,'Electrical Engineering'),
+(3,'Mechanical Engineering');
+
+INSERT into Professors VALUES
+(101,'Dr. A. Kumar',1),
+(102,'Dr. B. Sen',2),
+(103,'Dr. C. Das',1),
+(104,'Dr. D. Roy',3);
+
+INSERT into Students VALUES
+(201,'Alice',1),
+(202,'Bob',1),
+(203,'Charlie',2),
+(204,'David',3),
+(205,'Eva',1);
+
+INSERT into Courses VALUES
+(301,'Database Systems',101),
+(302,'Operating Systems',103),
+(303,'Circuits',102),
+(304,'Thermodynamics',104),
+(305,'Coumputer Networks',101);
+
+INSERT into Enrollment VALUES
+(201,301),
+(202,301),
+(203,303),
+(204,304),
+(201,302),
+(205,301),
+(205,305),
+(202,305);
+
+-- -----------------------------------------------------------------------------
+
+SELECT * from Courses;
+SELECT * from Departments;
+SELECT * from Students;
+SELECT * from Professors;
+SELECT * from Enrollment;
+
+SELECT s.name,d.dept_name 
+from Students s INNER join Departments d 
+ON  s.dept_id = d.dept_id 
+where d.dept_name = 'Computer Science';
